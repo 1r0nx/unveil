@@ -1,0 +1,8 @@
+**/__pycache__/
+**/.obsidian/
+**/to_do.txt
+**/report.txt
+**/bin/
+**/dist/
+**/build/
+**/*.spec
