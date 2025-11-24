@@ -14,8 +14,13 @@ def write_in_report(report, command, res):
 def file_type_identifier(filename):
     cmd = ["file", "-b", filename]
     result = subprocess.run(cmd, capture_output=True, text=True)
+    print(
+        f"\nRunning: {os.path.basename(cmd[0])} {cmd[1]} {os.path.basename(cmd[2])}\n"
+    )
     res = result.stdout
-    write_in_report(report_file, "file", res)
+    with open(report_file, "a") as r:
+        r.write(f"-------------file-----------------\n\n")
+        r.write(res + "\n")
     if ("PC bitmap" in res) or ("GIF" in res) or ("JPEG" in res) or ("PNG" in res):
         return "image"
     if "PDF" in res:

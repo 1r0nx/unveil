@@ -1,10 +1,10 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 
+import os
+import sys
 import argparse
 import subprocess
-import os
 import commands
-import sys
 
 
 parser = argparse.ArgumentParser(
