@@ -5,11 +5,6 @@ import sys
 report_file = "report.txt"
 
 
-def resource_path(relative_path):
-    base = getattr(sys, "_MEIPASS", os.path.abspath("."))
-    return os.path.join(base, relative_path)
-
-
 def write_in_report(report, command, res):
     with open(report_file, "a") as r:
         r.write(f"\n-------------{command}-----------------\n\n")
@@ -45,8 +40,7 @@ def file_type_identifier(filename):
 
 
 def exiftool_command(filename):
-    exiftool_path = resource_path("bin/exiftool")
-    cmd = [exiftool_path, filename]
+    cmd = ["exiftool", filename]
     print(f"\nRunning: {os.path.basename(cmd[0])} {os.path.basename(cmd[1])}\n")
     result = subprocess.run(cmd, capture_output=True, text=True)
     res = result.stdout
@@ -54,8 +48,7 @@ def exiftool_command(filename):
 
 
 def binwalk_command(filename):
-    binwalk_path = resource_path("bin/binwalk")
-    cmd = [binwalk_path, filename]
+    cmd = ["binwalk", filename]
     print(f"\nRunning: {os.path.basename(cmd[0])} {os.path.basename(cmd[1])}\n")
     result = subprocess.run(cmd, capture_output=True, text=True)
     res = result.stdout
@@ -63,8 +56,7 @@ def binwalk_command(filename):
 
 
 def xxd_command(filename):
-    xxd_path = resource_path("bin/xxd")
-    cmd = [xxd_path, "-g", "1", "-l", "208", filename]
+    cmd = ["xxd", "-g", "1", "-l", "208", filename]
     print(
         f"\nRunning: {os.path.basename(cmd[0])} {cmd[1]} {cmd[2]} {cmd[3]} {cmd[4]} {os.path.basename(cmd[5])}\n"
     )
@@ -74,7 +66,7 @@ def xxd_command(filename):
     with open(report_file, "a") as r:
         r.write(f"First 208 bytes\n")
 
-    cmd = [xxd_path, "-g", "1", "-s", "-208", filename]
+    cmd = ["xxd", "-g", "1", "-s", "-208", filename]
     print(
         f"\nRunning: {os.path.basename(cmd[0])} {cmd[1]} {cmd[2]} {cmd[3]} {cmd[4]} {os.path.basename(cmd[5])}\n"
     )
@@ -86,8 +78,7 @@ def xxd_command(filename):
 
 
 def pngcheck_command(filename):
-    pngcheck_path = resource_path("bin/pngcheck")
-    cmd = [pngcheck_path, "-v", filename]
+    cmd = ["pngcheck", "-v", filename]
     print(
         f"\nRunning: {os.path.basename(cmd[0])} {cmd[1]} {os.path.basename(cmd[2])}\n"
     )
@@ -97,8 +88,7 @@ def pngcheck_command(filename):
 
 
 def zsteg_command(filename):
-    zsteg_path = resource_path("bin/zsteg")
-    cmd = [zsteg_path, filename]
+    cmd = ["zsteg", filename]
     print(f"\nRunning: {os.path.basename(cmd[0])} {os.path.basename(cmd[1])}\n")
     result = subprocess.run(cmd, capture_output=True, text=True)
     res = result.stdout
@@ -106,9 +96,8 @@ def zsteg_command(filename):
 
 
 def steghide_command(filename):
-    steghide_path = resource_path("bin/steghide")
-    cmd = [steghide_path, "info", filename, "-p", ""]
-    cmd_displayed = [steghide_path, "info", filename, "-p", '""']
+    cmd = ["steghide", "info", filename, "-p", ""]
+    cmd_displayed = ["steghide", "info", filename, "-p", '""']
     print(
         f"\nRunning: {os.path.basename(cmd_displayed[0])} {cmd_displayed[1]} {os.path.basename(cmd_displayed[2])} {cmd_displayed[3]} {cmd_displayed[4]}\n"
     )
@@ -118,8 +107,7 @@ def steghide_command(filename):
 
 
 def pdfinfo_command(filename):
-    pdfinfo_path = resource_path("bin/pdfinfo")
-    cmd = [pdfinfo_path, filename]
+    cmd = ["pdfinfo", filename]
     print(f"\nRunning: {os.path.basename(cmd[0])} {os.path.basename(cmd[1])}\n")
     result = subprocess.run(cmd, capture_output=True, text=True)
     res = result.stdout
@@ -127,8 +115,7 @@ def pdfinfo_command(filename):
 
 
 def unzip_command(filename):
-    unzip_path = resource_path("bin/unzip")
-    cmd = [unzip_path, "-l", filename]
+    cmd = ["unzip", "-l", filename]
     print(
         f"\nRunning: {os.path.basename(cmd[0])} {cmd[1]} {os.path.basename(cmd[2])}\n"
     )
@@ -138,8 +125,7 @@ def unzip_command(filename):
 
 
 def pdfimages_command(filename):
-    pdfimages_path = resource_path("bin/pdfimages")
-    cmd = [pdfimages_path, "-list", filename]
+    cmd = ["pdfimages", "-list", filename]
     print(
         f"\nRunning: {os.path.basename(cmd[0])} {cmd[1]} {os.path.basename(cmd[2])}\n"
     )
@@ -149,8 +135,7 @@ def pdfimages_command(filename):
 
 
 def pdftotext_command(filename):
-    pdftotext_path = resource_path("bin/pdftotext")
-    cmd = [pdftotext_path, filename, "-"]
+    cmd = ["pdftotext", filename, "-"]
     print(
         f"\nRunning: {os.path.basename(cmd[0])} {os.path.basename(cmd[1])} {cmd[2]}\n"
     )
@@ -160,8 +145,7 @@ def pdftotext_command(filename):
 
 
 def soxi_command(filename):
-    soxi_path = resource_path("bin/soxi")
-    cmd = [soxi_path, filename]
+    cmd = ["soxi", filename]
     print(f"\nRunning: {os.path.basename(cmd[0])} {os.path.basename(cmd[1])}\n")
     result = subprocess.run(cmd, capture_output=True, text=True)
     res = result.stdout
@@ -169,8 +153,7 @@ def soxi_command(filename):
 
 
 def seven_zip_command(filename):
-    seven_zip_path = resource_path("bin/7z")
-    cmd = [seven_zip_path, "l", filename]
+    cmd = ["7z", "l", filename]
     print(
         f"\nRunning: {os.path.basename(cmd[0])} {cmd[1]} {os.path.basename(cmd[2])}\n"
     )
@@ -180,8 +163,7 @@ def seven_zip_command(filename):
 
 
 def olevba_command(filename):
-    olevba_path = resource_path("bin/olevba")
-    cmd = [olevba_path, filename]
+    cmd = ["olevba", filename]
     print(f"\nRunning: {os.path.basename(cmd[0])} {os.path.basename(cmd[1])}\n")
     result = subprocess.run(cmd, capture_output=True, text=True)
     res = result.stdout
@@ -189,8 +171,7 @@ def olevba_command(filename):
 
 
 def docx2txt_command(filename):
-    docx2txt_path = resource_path("bin/docx2txt")
-    cmd = [docx2txt_path, filename, "-"]
+    cmd = ["docx2txt", filename, "-"]
     print(
         f"\nRunning: {os.path.basename(cmd[0])} {os.path.basename(cmd[1])} {cmd[2]}\n"
     )
@@ -200,8 +181,7 @@ def docx2txt_command(filename):
 
 
 def fdisk_command(filename):
-    fdisk_path = resource_path("bin/fdisk")
-    cmd = [fdisk_path, "-l", filename]
+    cmd = ["fdisk", "-l", filename]
     print(
         f"\nRunning: {os.path.basename(cmd[0])} {cmd[1]} {os.path.basename(cmd[2])}\n"
     )
@@ -211,8 +191,7 @@ def fdisk_command(filename):
 
 
 def mmls_command(filename):
-    mmls_path = resource_path("bin/mmls")
-    cmd = [mmls_path, filename]
+    cmd = ["mmls", filename]
     print(f"\nRunning: {os.path.basename(cmd[0])} {os.path.basename(cmd[1])}\n")
     result = subprocess.run(cmd, capture_output=True, text=True)
     res = result.stdout
@@ -220,8 +199,7 @@ def mmls_command(filename):
 
 
 def checksec_command(filename):
-    checksec_path = resource_path("bin/checksec")
-    cmd = [checksec_path, filename]
+    cmd = ["checksec", filename]
     print(f"\nRunning: {os.path.basename(cmd[0])} {os.path.basename(cmd[1])}\n")
     result = subprocess.run(cmd, capture_output=True, text=True)
     res = result.stderr
@@ -229,8 +207,7 @@ def checksec_command(filename):
 
 
 def nm_command(filename):
-    nm_path = resource_path("bin/nm")
-    cmd = [nm_path, filename]
+    cmd = ["nm", filename]
     print(f"\nRunning: {os.path.basename(cmd[0])} {os.path.basename(cmd[1])}\n")
     result = subprocess.run(cmd, capture_output=True, text=True)
     res = result.stdout
@@ -238,8 +215,7 @@ def nm_command(filename):
 
 
 def objdump_command(filename):
-    objdump_path = resource_path("bin/objdump")
-    cmd = [objdump_path, "-d", filename]
+    cmd = ["objdump_path", "-d", filename]
     print(
         f"\nRunning: {os.path.basename(cmd[0])} {cmd[1]} {os.path.basename(cmd[2])}\n"
     )
@@ -249,8 +225,7 @@ def objdump_command(filename):
 
 
 def sqlite3_command(filename):
-    sqlite3_path = resource_path("bin/sqlite3")
-    cmd = [sqlite3_path, filename, ".tables"]
+    cmd = ["sqlite3", filename, ".tables"]
     print(
         f"\nRunning: {os.path.basename(cmd[0])} {os.path.basename(cmd[1])} {cmd[2]} \n"
     )
