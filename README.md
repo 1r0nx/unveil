@@ -53,21 +53,30 @@ This tool is especially useful for:
 
 ---
 
-## 📦 Installation
-
+## 🧱 Requirements
+You need to have pyinstaller to compile the source code into binary. You can install it with:
+```
+pip3 install pyinstaller
 ```
 
-Clone directly:
+---
 
-```bash
-git clone https://github.com/1r0nx/unveil.git
-cd unveil
-./build.sh
+## 📦 Installation
+You can install it by cloning the repository and build the binary
+```
+git clone https://github.com/1r0nx/unveil.git;
+cd unveil;
+./build.sh;
 ```
 
 ```
 The executable will be is in dist/
-You can save it where ever you want to use it at standard linux command!
+You can save it where ever you want and use it as a standard linux command!
+```
+Or you can run the script normally
+```
+chmod +x unveil.py
+./unveil.py
 ```
 ---
 
