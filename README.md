@@ -66,6 +66,7 @@ You can install it by cloning the repository and build the binary
 ```
 git clone https://github.com/1r0nx/unveil.git;
 cd unveil;
+chmod +x build.sh
 ./build.sh;
 ```
 
