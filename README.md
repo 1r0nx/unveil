@@ -28,7 +28,7 @@ You need to have pyinstaller to compile the source code into binary. You can ins
 pip3 install pyinstaller
 ```
 
-And all commands to be run:
+And all commands to be run (you need to have them on you machine):
 ```
 7z
 binwalk
@@ -59,6 +59,7 @@ sudo apt-get install python3 python3-venv
 python3 -m venv /path/to/venv
 pip3 install oletools
 ```
+Notes: In the ./intall_commands.sh you can uncomments the three last lines to set the venv to ~/Documents/Python
 
 ---
 
@@ -67,14 +68,13 @@ You can install it by cloning the repository and build the binary
 ```
 git clone https://github.com/1r0nx/unveil.git;
 cd unveil;
-chmod +x install_commands.sh
-chmod +x build.sh
+chmod +x *.sh
 ./install_commands.sh
 ./build.sh;
 ```
 
 ```
-The executable will be is in dist/
+The executable will be in dist/
 You can save it where ever you want and use it as a standard linux command!
 ```
 
@@ -99,7 +99,7 @@ unveil -f suspicious_file.bin -o suspicisous_report.txt
 
 ---
 
-## 📂 Supported File Types (example)
+## 📂 Supported File Types
 
 - Image
 - Pdf
@@ -139,5 +139,7 @@ Pull Requests and suggestions are welcome. Please follow standard coding practic
 
 ## 📫 Contact
 
-Author: ir0nx
 Project: unveil
+Author: ir0nx
+
+
