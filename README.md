@@ -68,8 +68,8 @@ You can install it by cloning the repository and build the binary
 ```
 git clone https://github.com/1r0nx/unveil.git;
 cd unveil;
-chmod +x *.sh
-./install_commands.sh
+chmod +x *.sh;
+./install_commands.sh;
 ./build.sh;
 ```
 
