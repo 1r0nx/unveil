@@ -120,7 +120,7 @@ MIT License
 
 ## 🙋 Contributing
 
-Pull Requests are welcome. Please follow standard coding practices and document your changes.
+Pull Requests and suggestions are welcome. Please follow standard coding practices and document your changes.
 
 ---
 
