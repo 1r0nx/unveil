@@ -112,10 +112,9 @@ unveil -f suspicious_file.bin -o suspicisous_report.txt
 
 ## 🧩 How It Works
 
-1. Detects file type using magic bytes or file signature
-2. Matches file type with a predefined rule
-3. Executes associated command
-4. Stores output in report file
+1. Matches file type with a predefined rule
+2. Executes associated command
+3. Stores output in report file
 
 ---
 
@@ -134,12 +133,5 @@ MIT License
 ## 🙋 Contributing
 
 Pull Requests and suggestions are welcome. Please follow standard coding practices and document your changes.
-
----
-
-## 📫 Contact
-
-Project: unveil
-Author: ir0nx
 
 
