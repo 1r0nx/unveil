@@ -13,6 +13,10 @@ echo "-----------> INSTALLING/CHECKING zsteg"
 sudo gem install zsteg
 
 ## Uncomment the following lines to set a python3-venv in ~/Documents/Python
-#sudo apt-get install python3 python3-venv
-#python3 -m venv ~/Documents/Python
-#pip3 install oletools
+#if [ -n "$VIRTUAL_ENV" ]; then
+#    echo "A python-venv is already set as: $VIRTUAL_ENV"
+#else
+#    sudo apt-get install python3 python3-venv
+#    python3 -m venv ~/Documents/Python
+#    pip3 install oletools
+#fi
