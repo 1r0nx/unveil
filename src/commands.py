@@ -5,21 +5,51 @@ import sys
 report_file = "report.txt"
 
 
+def ascii_art():
+    art = r"""
+$$\   $$\                               $$\ $$\ 
+$$ |  $$ |                              \__|$$ |
+$$ |  $$ |$$$$$$$\ $$\    $$\  $$$$$$\  $$\ $$ |
+$$ |  $$ |$$  __$$\\$$\  $$  |$$  __$$\ $$ |$$ |
+$$ |  $$ |$$ |  $$ |\$$\$$  / $$$$$$$$ |$$ |$$ |
+$$ |  $$ |$$ |  $$ | \$$$  /  $$   ____|$$ |$$ |
+\$$$$$$  |$$ |  $$ |  \$  /   \$$$$$$$\ $$ |$$ |
+ \______/ \__|  \__|   \_/     \_______|\__|\__|
+"""
+    print(art)
+
+
+def beatiful_display(command):
+    """
+    Affiche la commande passée en paramètre dans un encadré ASCII
+    dont la largeur s'adapte automatiquement.
+    """
+    # Largeur de l'encadré
+    width = len(command) + 4  # +4 pour les marges à gauche et droite
+
+    # Bordures
+    top = "╔" + "═" * width + "╗"
+    bottom = "╚" + "═" * width + "╝"
+    middle = f"║  {command}  ║"
+
+    # Affichage
+    return f"{top}\n{middle}\n{bottom}"
+
+
 def write_in_report(report, command, res):
     with open(report_file, "a") as r:
-        r.write(f"\n-------------{command}-----------------\n\n")
+        r.write(f"\n{command}\n\n")
         r.write(res + "\n")
 
 
 def file_type_identifier(filename):
     cmd = ["file", "-b", filename]
+    cmd_displayed = f"{os.path.basename(cmd[0])} {cmd[1]} {os.path.basename(cmd[2])}"
     result = subprocess.run(cmd, capture_output=True, text=True)
-    print(
-        f"\nRunning: {os.path.basename(cmd[0])} {cmd[1]} {os.path.basename(cmd[2])}\n"
-    )
+    print(f"\n\nRunning: {cmd_displayed}\n")
     res = result.stdout
     with open(report_file, "a") as r:
-        r.write(f"-------------file-----------------\n\n")
+        r.write(f"{beatiful_display(cmd_displayed)}\n\n")
         r.write(res + "\n")
     if ("PC bitmap" in res) or ("GIF" in res) or ("JPEG" in res) or ("PNG" in res):
         return "image"
@@ -46,194 +76,190 @@ def file_type_identifier(filename):
 
 def exiftool_command(filename):
     cmd = ["exiftool", filename]
-    print(f"\nRunning: {os.path.basename(cmd[0])} {os.path.basename(cmd[1])}\n")
+    cmd_displayed = f"{os.path.basename(cmd[0])} {os.path.basename(cmd[1])}"
+    print(f"\nRunning: {cmd_displayed} \n")
     result = subprocess.run(cmd, capture_output=True, text=True)
     res = result.stdout
-    write_in_report(report_file, "exiftool", res)
+    write_in_report(report_file, beatiful_display(cmd_displayed), res)
 
 
 def binwalk_command(filename):
     cmd = ["binwalk", filename]
-    print(f"\nRunning: {os.path.basename(cmd[0])} {os.path.basename(cmd[1])}\n")
+    cmd_displayed = f"{os.path.basename(cmd[0])} {os.path.basename(cmd[1])}"
+    print(f"\nRunning: {cmd_displayed}\n")
     result = subprocess.run(cmd, capture_output=True, text=True)
     res = result.stdout
-    write_in_report(report_file, "binwalk", res)
+    write_in_report(report_file, beatiful_display(cmd_displayed), res)
 
 
 def xxd_command(filename):
     cmd = ["xxd", "-g", "1", "-l", "208", filename]
-    print(
-        f"\nRunning: {os.path.basename(cmd[0])} {cmd[1]} {cmd[2]} {cmd[3]} {cmd[4]} {os.path.basename(cmd[5])}\n"
-    )
+    cmd_displayed = f"{os.path.basename(cmd[0])} {cmd[1]} {cmd[2]} {cmd[3]} {cmd[4]} {os.path.basename(cmd[5])}"
+    print(f"\nRunning: {cmd_displayed}\n")
     result = subprocess.run(cmd, capture_output=True, text=True)
     res = result.stdout
-    write_in_report(report_file, "hexdump", res)
+    write_in_report(report_file, beatiful_display(cmd_displayed), res)
     with open(report_file, "a") as r:
         r.write(f"First 208 bytes\n")
 
     cmd = ["xxd", "-g", "1", "-s", "-208", filename]
-    print(
-        f"\nRunning: {os.path.basename(cmd[0])} {cmd[1]} {cmd[2]} {cmd[3]} {cmd[4]} {os.path.basename(cmd[5])}\n"
-    )
+    cmd_displayed = f"{os.path.basename(cmd[0])} {cmd[1]} {cmd[2]} {cmd[3]} {cmd[4]} {os.path.basename(cmd[5])}"
+    print(f"\nRunning: {cmd_displayed} \n")
     result = subprocess.run(cmd, capture_output=True, text=True)
     res = result.stdout
-    write_in_report(report_file, "hexdump", res)
+    write_in_report(report_file, beatiful_display(cmd_displayed), res)
     with open(report_file, "a") as r:
         r.write(f"Last 208 bytes\n")
 
 
 def pngcheck_command(filename):
     cmd = ["pngcheck", "-v", filename]
-    print(
-        f"\nRunning: {os.path.basename(cmd[0])} {cmd[1]} {os.path.basename(cmd[2])}\n"
-    )
+    cmd_displayed = f"{os.path.basename(cmd[0])} {cmd[1]} {os.path.basename(cmd[2])}"
+    print(f"\nRunning: {cmd_displayed} \n")
     result = subprocess.run(cmd, capture_output=True, text=True)
     res = result.stdout
-    write_in_report(report_file, "pngcheck", res)
+    write_in_report(report_file, beatiful_display(cmd_displayed), res)
 
 
 def zsteg_command(filename):
     cmd = ["zsteg", filename]
-    print(f"\nRunning: {os.path.basename(cmd[0])} {os.path.basename(cmd[1])}\n")
+    cmd_displayed = f"{os.path.basename(cmd[0])} {os.path.basename(cmd[1])}"
+    print(f"\nRunning: {cmd_displayed} \n")
     result = subprocess.run(cmd, capture_output=True, text=True)
     res = result.stdout
-    write_in_report(report_file, "zsteg", res)
+    write_in_report(report_file, beatiful_display(cmd_displayed), res)
 
 
 def steghide_command(filename):
     cmd = ["steghide", "info", filename, "-p", ""]
-    cmd_displayed = ["steghide", "info", filename, "-p", '""']
-    print(
-        f"\nRunning: {os.path.basename(cmd_displayed[0])} {cmd_displayed[1]} {os.path.basename(cmd_displayed[2])} {cmd_displayed[3]} {cmd_displayed[4]}\n"
-    )
+    cmd_displayed = f"{os.path.basename(cmd[0])} {cmd[1]} {os.path.basename(cmd[2])} {cmd[3]} {cmd[4]}"
+    print(f"\nRunning: {cmd_displayed}\n")
     result = subprocess.run(cmd, capture_output=True, text=True)
     res = result.stdout + result.stderr
-    write_in_report(report_file, "steghide", res)
+    write_in_report(report_file, beatiful_display(cmd_displayed), res)
 
 
 def pdfinfo_command(filename):
     cmd = ["pdfinfo", filename]
-    print(f"\nRunning: {os.path.basename(cmd[0])} {os.path.basename(cmd[1])}\n")
+    cmd_displayed = f"{os.path.basename(cmd[0])} {os.path.basename(cmd[1])}"
+    print(f"\nRunning: {cmd_displayed} \n")
     result = subprocess.run(cmd, capture_output=True, text=True)
     res = result.stdout
-    write_in_report(report_file, "pdfinfo", res)
+    write_in_report(report_file, beatiful_display(cmd_displayed), res)
 
 
 def unzip_command(filename):
     cmd = ["unzip", "-l", filename]
-    print(
-        f"\nRunning: {os.path.basename(cmd[0])} {cmd[1]} {os.path.basename(cmd[2])}\n"
-    )
+    cmd_displayed = f"{os.path.basename(cmd[0])} {cmd[1]} {os.path.basename(cmd[2])}"
+    print(f"\nRunning: {cmd_displayed} \n")
     result = subprocess.run(cmd, capture_output=True, text=True)
     res = result.stdout
-    write_in_report(report_file, "unzip", res)
+    write_in_report(report_file, beatiful_display(cmd_displayed), res)
 
 
 def pdfimages_command(filename):
     cmd = ["pdfimages", "-list", filename]
-    print(
-        f"\nRunning: {os.path.basename(cmd[0])} {cmd[1]} {os.path.basename(cmd[2])}\n"
-    )
+    cmd_displayed = f"{os.path.basename(cmd[0])} {cmd[1]} {os.path.basename(cmd[2])}"
+    print(f"\nRunning: {cmd_displayed} \n")
     result = subprocess.run(cmd, capture_output=True, text=True)
     res = result.stdout
-    write_in_report(report_file, "pdfimages", res)
+    write_in_report(report_file, beatiful_display(cmd_displayed), res)
 
 
 def pdftotext_command(filename):
     cmd = ["pdftotext", filename, "-"]
-    print(
-        f"\nRunning: {os.path.basename(cmd[0])} {os.path.basename(cmd[1])} {cmd[2]}\n"
-    )
+    cmd_displayed = f"{os.path.basename(cmd[0])} {os.path.basename(cmd[1])} {cmd[2]}"
+    print(f"\nRunning: {cmd_displayed}\n")
     result = subprocess.run(cmd, capture_output=True, text=True)
     res = result.stdout
-    write_in_report(report_file, "pdftotext", res)
+    write_in_report(report_file, beatiful_display(cmd_displayed), res)
 
 
 def soxi_command(filename):
     cmd = ["soxi", filename]
-    print(f"\nRunning: {os.path.basename(cmd[0])} {os.path.basename(cmd[1])}\n")
+    cmd_displayed = f"{os.path.basename(cmd[0])} {os.path.basename(cmd[1])}"
+    print(f"\nRunning: {cmd_displayed} \n")
     result = subprocess.run(cmd, capture_output=True, text=True)
     res = result.stdout
-    write_in_report(report_file, "soxi", res)
+    write_in_report(report_file, beatiful_display(cmd_displayed), res)
 
 
 def seven_zip_command(filename):
     cmd = ["7z", "l", filename]
-    print(
-        f"\nRunning: {os.path.basename(cmd[0])} {cmd[1]} {os.path.basename(cmd[2])}\n"
-    )
+    cmd_displayed = f"{os.path.basename(cmd[0])} {cmd[1]} {os.path.basename(cmd[2])}"
+    print(f"\nRunning: {cmd_displayed} \n")
     result = subprocess.run(cmd, capture_output=True, text=True)
     res = result.stdout
-    write_in_report(report_file, "7z", res)
+    write_in_report(report_file, beatiful_display(cmd_displayed), res)
 
 
 def olevba_command(filename):
     cmd = ["olevba", filename]
-    print(f"\nRunning: {os.path.basename(cmd[0])} {os.path.basename(cmd[1])}\n")
+    cmd_displayed = f"{os.path.basename(cmd[0])} {os.path.basename(cmd[1])}"
+    print(f"\nRunning: {cmd_displayed}\n")
     result = subprocess.run(cmd, capture_output=True, text=True)
     res = result.stdout
-    write_in_report(report_file, "olevba", res)
+    write_in_report(report_file, beatiful_display(cmd_displayed), res)
 
 
 def docx2txt_command(filename):
     cmd = ["docx2txt", filename, "-"]
-    print(
-        f"\nRunning: {os.path.basename(cmd[0])} {os.path.basename(cmd[1])} {cmd[2]}\n"
-    )
+    cmd_displayed = f"{os.path.basename(cmd[0])} {os.path.basename(cmd[1])} {cmd[2]}"
+    print(f"\nRunning: {cmd_displayed} \n")
     result = subprocess.run(cmd, capture_output=True, text=True)
     res = result.stdout
-    write_in_report(report_file, "docx2txt", res)
+    write_in_report(report_file, beatiful_display(cmd_displayed), res)
 
 
 def fdisk_command(filename):
     cmd = ["fdisk", "-l", filename]
-    print(
-        f"\nRunning: {os.path.basename(cmd[0])} {cmd[1]} {os.path.basename(cmd[2])}\n"
-    )
+    cmd_displayed = f"{os.path.basename(cmd[0])} {cmd[1]} {os.path.basename(cmd[2])}"
+    print(f"\nRunning: {cmd_displayed}\n")
     result = subprocess.run(cmd, capture_output=True, text=True)
     res = result.stdout
-    write_in_report(report_file, "fdisk", res)
+    write_in_report(report_file, beatiful_display(cmd_displayed), res)
 
 
 def mmls_command(filename):
     cmd = ["mmls", filename]
-    print(f"\nRunning: {os.path.basename(cmd[0])} {os.path.basename(cmd[1])}\n")
+    cmd_displayed = f"{os.path.basename(cmd[0])} {os.path.basename(cmd[1])}"
+    print(f"\nRunning: {cmd_displayed} \n")
     result = subprocess.run(cmd, capture_output=True, text=True)
     res = result.stdout
-    write_in_report(report_file, "mmls", res)
+    write_in_report(report_file, beatiful_display(cmd_displayed), res)
 
 
 def checksec_command(filename):
     cmd = ["checksec", filename]
-    print(f"\nRunning: {os.path.basename(cmd[0])} {os.path.basename(cmd[1])}\n")
+    cmd_displayed = f"{os.path.basename(cmd[0])} {os.path.basename(cmd[1])}"
+    print(f"\nRunning: {cmd_displayed}\n")
     result = subprocess.run(cmd, capture_output=True, text=True)
     res = result.stderr
-    write_in_report(report_file, "checksec", res)
+    write_in_report(report_file, beatiful_display(cmd_displayed), res)
 
 
 def nm_command(filename):
     cmd = ["nm", filename]
-    print(f"\nRunning: {os.path.basename(cmd[0])} {os.path.basename(cmd[1])}\n")
+    cmd_displayed = f"{os.path.basename(cmd[0])} {os.path.basename(cmd[1])}"
+    print(f"\nRunning: {cmd_displayed} \n")
     result = subprocess.run(cmd, capture_output=True, text=True)
     res = result.stdout
-    write_in_report(report_file, "nm", res)
+    write_in_report(report_file, beatiful_display(cmd_displayed), res)
 
 
 def objdump_command(filename):
     cmd = ["objdump", "-d", filename]
-    print(
-        f"\nRunning: {os.path.basename(cmd[0])} {cmd[1]} {os.path.basename(cmd[2])}\n"
-    )
+    cmd_displayed = f"{os.path.basename(cmd[0])} {cmd[1]} {os.path.basename(cmd[2])}"
+    print(f"\nRunning: {cmd_displayed} \n")
     result = subprocess.run(cmd, capture_output=True, text=True)
     res = result.stdout
-    write_in_report(report_file, "objdump", res)
+    write_in_report(report_file, beatiful_display(cmd_displayed), res)
 
 
 def sqlite3_command(filename):
     cmd = ["sqlite3", filename, ".tables"]
-    print(
-        f"\nRunning: {os.path.basename(cmd[0])} {os.path.basename(cmd[1])} {cmd[2]} \n"
-    )
+    cmd_displayed = f"{os.path.basename(cmd[0])} {os.path.basename(cmd[1])} {cmd[2]}"
+    print(f"\nRunning: {cmd_displayed} \n")
     result = subprocess.run(cmd, capture_output=True, text=True)
     res = result.stdout
-    write_in_report(report_file, "sqlite3", res)
+    write_in_report(report_file, beatiful_display(cmd_displayed), res)

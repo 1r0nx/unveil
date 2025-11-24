@@ -14,6 +14,7 @@ parser.add_argument("-f", "--file", type=str, metavar="filename", required=True)
 parser.add_argument("-o", "--output", type=str, metavar="report")
 
 if len(sys.argv) == 1:
+    commands.ascii_art()
     parser.print_help()
     sys.exit(0)
 
