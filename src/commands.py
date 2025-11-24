@@ -215,7 +215,7 @@ def nm_command(filename):
 
 
 def objdump_command(filename):
-    cmd = ["objdump_path", "-d", filename]
+    cmd = ["objdump", "-d", filename]
     print(
         f"\nRunning: {os.path.basename(cmd[0])} {cmd[1]} {os.path.basename(cmd[2])}\n"
     )

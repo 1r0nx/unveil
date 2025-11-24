@@ -4,6 +4,7 @@ import argparse
 import subprocess
 import os
 import commands
+import sys
 
 
 parser = argparse.ArgumentParser(
@@ -11,6 +12,11 @@ parser = argparse.ArgumentParser(
 )
 parser.add_argument("-f", "--file", type=str, metavar="filename", required=True)
 parser.add_argument("-o", "--output", type=str, metavar="report")
+
+if len(sys.argv) == 1:
+    parser.print_help()
+    sys.exit(0)
+
 args = parser.parse_args()
 filename = args.file
 
