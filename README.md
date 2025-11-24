@@ -59,7 +59,7 @@ sudo apt-get install python3 python3-venv
 python3 -m venv /path/to/venv
 pip3 install oletools
 ```
-Notes: In the ./intall_commands.sh you can uncomments the three last lines to set the venv to ~/Documents/Python
+Notes: In the ./intall_commands.sh you can uncomments the last lines to set the venv to ~/Documents/Python
 
 ---
 
