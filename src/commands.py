@@ -132,7 +132,7 @@ def zsteg_command(filename):
 
 def steghide_command(filename):
     cmd = ["steghide", "info", filename, "-p", ""]
-    cmd_displayed = f"{os.path.basename(cmd[0])} {cmd[1]} {os.path.basename(cmd[2])} {cmd[3]} {cmd[4]}"
+    cmd_displayed = f"{os.path.basename(cmd[0])} {cmd[1]} {os.path.basename(cmd[2])} {cmd[3]} '{cmd[4]}'"
     print(f"\nRunning: {cmd_displayed}\n")
     result = subprocess.run(cmd, capture_output=True, text=True)
     res = result.stdout + result.stderr
