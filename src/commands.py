@@ -20,19 +20,14 @@ $$ |  $$ |$$ |  $$ | \$$$  /  $$   ____|$$ |$$ |
 
 
 def beatiful_display(command):
-    """
-    Affiche la commande passée en paramètre dans un encadré ASCII
-    dont la largeur s'adapte automatiquement.
-    """
-    # Largeur de l'encadré
-    width = len(command) + 4  # +4 pour les marges à gauche et droite
+    width = len(command) + 4
 
-    # Bordures
+    # Border
     top = "╔" + "═" * width + "╗"
     bottom = "╚" + "═" * width + "╝"
     middle = f"║  {command}  ║"
 
-    # Affichage
+    # Display
     return f"{top}\n{middle}\n{bottom}"
 
 
