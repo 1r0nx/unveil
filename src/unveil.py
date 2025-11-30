@@ -28,7 +28,7 @@ if os.path.exists(filename):
     pass
 else:
     print(f'The file "{filename}" doesnt exist!')
-    exit(0)
+    sys.exit(0)
 
 # Start of commands to run for any files
 res = commands.file_type_identifier(filename)
@@ -58,6 +58,7 @@ elif res == "document":
     commands.unzip_command(filename)
     commands.olevba_command(filename)
     commands.docx2txt_command(filename)
+    commands.odt2txt_command(filename)
 
 elif res == "image_disk":
     commands.fdisk_command(filename)
@@ -74,6 +75,6 @@ elif res == "database":
 else:
     print("\nThis file type is not supported :(")
     print(f'GO CHECK THE FILE: "{commands.report_file}"\n')
-    exit(0)
+    sys.exit(0)
 
 print(f'\nGO CHECK THE FILE: "{commands.report_file}"\n')

@@ -1,6 +1,6 @@
 #!/usr/bin/bash
 
-commands=("binutils" "poppler-utils" "sleuthkit" "7zip" "binwalk" "checksec" "steghide" "docx2txt" "libimage-exiftool-perl" "fdisk" "ffmpeg" "file" "pngcheck" "sqlite3" "unzip" "xxd" "ruby-rubygems")
+commands=("binutils" "poppler-utils" "sleuthkit" "7zip" "binwalk" "checksec" "steghide" "docx2txt" "libimage-exiftool-perl" "fdisk" "ffmpeg" "file" "pngcheck" "sqlite3" "unzip" "xxd" "ruby-rubygems" "odt2txt")
 
 for tool in "${commands[@]}"
 do

@@ -2,7 +2,7 @@
 
 ## 🛠️ Overview
 
-**Unveil** is a flexible command-line tool designed to analyse a file by executing specific commands based on their detected file type. It's a "cold" analysis; that means it's not going to try to extract something.
+**Unveil** is a flexible command-line tool designed to analyse a file by executing specific commands based on their detected file type. It's a "cold" analysis; that means it's not going to try to extract something (apart from text or macros).
 
 Its main goal is to automate file analysis and processing by applying predefined actions depending on the file format (PDF, ZIP, image, binary, etc.).
 
@@ -34,6 +34,7 @@ And all commands to be run (you need to have them on you machine):
 binwalk
 checksec
 docs2txt
+odt2txt
 exiftool
 fdisk 
 ffmpeg 

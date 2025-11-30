@@ -59,7 +59,7 @@ def file_type_identifier(filename):
         return "audio"
     if "archive" in res:
         return "archive"
-    if "Microsoft" in res:
+    if ("Microsoft" in res) or ("OpenDocument" in res):
         return "document"
     if "executable" in res:
         return "executable"
@@ -200,6 +200,15 @@ def olevba_command(filename):
 def docx2txt_command(filename):
     cmd = ["docx2txt", filename, "-"]
     cmd_displayed = f"{os.path.basename(cmd[0])} {os.path.basename(cmd[1])} {cmd[2]}"
+    print(f"\nRunning: {cmd_displayed} \n")
+    result = subprocess.run(cmd, capture_output=True, text=True)
+    res = result.stdout
+    write_in_report(report_file, beatiful_display(cmd_displayed), res)
+
+
+def odt2txt_command(filename):
+    cmd = ["odt2txt", filename]
+    cmd_displayed = f"{os.path.basename(cmd[0])} {os.path.basename(cmd[1])}"
     print(f"\nRunning: {cmd_displayed} \n")
     result = subprocess.run(cmd, capture_output=True, text=True)
     res = result.stdout

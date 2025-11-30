@@ -1,0 +1,168 @@
+╔═══════════════════╗
+║  file -b doc.odt  ║
+╚═══════════════════╝
+
+OpenDocument Text
+
+
+╔════════════════════╗
+║  exiftool doc.odt  ║
+╚════════════════════╝
+
+ExifTool Version Number         : 13.36
+File Name                       : doc.odt
+Directory                       : ../test_files
+File Size                       : 2.3 MB
+File Modification Date/Time     : 2013:07:23 03:20:56+01:00
+File Access Date/Time           : 2025:11:30 23:41:56+01:00
+File Inode Change Date/Time     : 2025:11:30 23:27:21+01:00
+File Permissions                : -rwxrwxrwx
+File Type                       : ODT
+File Type Extension             : odt
+MIME Type                       : application/vnd.oasis.opendocument.text
+Initial-creator                 : thanatos
+Creation-date                   : 2013:07:22 23:24:48
+Date                            : 2013:07:22 23:25:23
+Creator                         : thanatos
+Editing-duration                : P0D
+Editing-cycles                  : 1
+Document-statistic Table-count  : 0
+Document-statistic Image-count  : 1
+Document-statistic Object-count : 0
+Document-statistic Page-count   : 1
+Document-statistic Paragraph-count: 3
+Document-statistic Word-count   : 9
+Document-statistic Character-count: 58
+Document-statistic Non-whitespace-character-count: 51
+Generator                       : LibreOffice/4.0.2.2$Linux_X86_64 LibreOffice_project/400m0$Build-2
+Preview PNG                     : (Binary data 41974 bytes, use -b option to extract)
+
+
+╔═══════════════════╗
+║  binwalk doc.odt  ║
+╚═══════════════════╝
+
+
+DECIMAL       HEXADECIMAL     DESCRIPTION
+--------------------------------------------------------------------------------
+77            0x4D            Zip archive data, at least v2.0 to extract, compressed size: 41974, uncompressed size: 41974, name: Thumbnails/thumbnail.png
+42105         0xA479          Zip archive data, at least v2.0 to extract, name: Pictures/1000000000000CC000000990038D2A62.jpg
+1425438       0x15C01E        JBOOT STAG header, image id: 0, timestamp 0xD3FA677A, image size: 2403158704 bytes, image JBOOT checksum: 0xB946, header JBOOT checksum: 0x82B2
+2333070       0x23998E        Zip archive data, at least v2.0 to extract, name: content.xml
+2334482       0x239F12        Zip archive data, at least v2.0 to extract, name: styles.xml
+2336713       0x23A7C9        Zip archive data, at least v2.0 to extract, name: settings.xml
+2338270       0x23ADDE        Zip archive data, at least v2.0 to extract, name: meta.xml
+2338784       0x23AFE0        Zip archive data, at least v2.0 to extract, name: manifest.rdf
+2339103       0x23B11F        Zip archive data, at least v2.0 to extract, name: Configurations2/accelerator/current.xml
+2339190       0x23B176        Zip archive data, at least v2.0 to extract, name: Configurations2/toolpanel/
+2339246       0x23B1AE        Zip archive data, at least v2.0 to extract, name: Configurations2/statusbar/
+2339302       0x23B1E6        Zip archive data, at least v2.0 to extract, name: Configurations2/progressbar/
+2339360       0x23B220        Zip archive data, at least v2.0 to extract, name: Configurations2/toolbar/
+2339414       0x23B256        Zip archive data, at least v2.0 to extract, name: Configurations2/images/Bitmaps/
+2339475       0x23B293        Zip archive data, at least v2.0 to extract, name: Configurations2/popupmenu/
+2339531       0x23B2CB        Zip archive data, at least v2.0 to extract, name: Configurations2/floater/
+2339585       0x23B301        Zip archive data, at least v2.0 to extract, name: Configurations2/menubar/
+2339639       0x23B337        Zip archive data, at least v2.0 to extract, name: META-INF/manifest.xml
+2341251       0x23B983        End of Zip archive, footer length: 22
+
+
+
+╔═══════════════════════════╗
+║  xxd -g 1 -l 208 doc.odt  ║
+╚═══════════════════════════╝
+
+00000000: 50 4b 03 04 14 00 00 08 00 00 2b ab f6 42 5e c6  PK........+..B^.
+00000010: 32 0c 27 00 00 00 27 00 00 00 08 00 00 00 6d 69  2.'...'.......mi
+00000020: 6d 65 74 79 70 65 61 70 70 6c 69 63 61 74 69 6f  metypeapplicatio
+00000030: 6e 2f 76 6e 64 2e 6f 61 73 69 73 2e 6f 70 65 6e  n/vnd.oasis.open
+00000040: 64 6f 63 75 6d 65 6e 74 2e 74 65 78 74 50 4b 03  document.textPK.
+00000050: 04 14 00 00 08 00 00 2b ab f6 42 c5 7d 2c c4 f6  .......+..B.},..
+00000060: a3 00 00 f6 a3 00 00 18 00 00 00 54 68 75 6d 62  ...........Thumb
+00000070: 6e 61 69 6c 73 2f 74 68 75 6d 62 6e 61 69 6c 2e  nails/thumbnail.
+00000080: 70 6e 67 89 50 4e 47 0d 0a 1a 0a 00 00 00 0d 49  png.PNG........I
+00000090: 48 44 52 00 00 00 c6 00 00 01 00 08 02 00 00 00  HDR.............
+000000a0: 67 3f 9e 17 00 00 a3 bd 49 44 41 54 78 9c ec bd  g?......IDATx...
+000000b0: 59 af 25 d9 75 26 16 7b c7 1c 71 a6 3b e7 50 59  Y.%.u&.{..q.;.PY
+000000c0: 55 2c 16 59 54 91 12 45 da 6a 49 6e c1 56 ab a1  U,.YT..E.jIn.V..
+
+First 208 bytes
+
+╔════════════════════════════╗
+║  xxd -g 1 -s -208 doc.odt  ║
+╚════════════════════════════╝
+
+0023b8c9: 00 00 00 00 00 00 00 18 00 00 00 00 00 00 00 00  ................
+0023b8d9: 00 00 00 00 00 cb b2 23 00 43 6f 6e 66 69 67 75  .......#.Configu
+0023b8e9: 72 61 74 69 6f 6e 73 32 2f 66 6c 6f 61 74 65 72  rations2/floater
+0023b8f9: 2f 50 4b 01 02 14 00 14 00 00 08 00 00 2b ab f6  /PK..........+..
+0023b909: 42 00 00 00 00 00 00 00 00 00 00 00 00 18 00 00  B...............
+0023b919: 00 00 00 00 00 00 00 00 00 00 00 01 b3 23 00 43  .............#.C
+0023b929: 6f 6e 66 69 67 75 72 61 74 69 6f 6e 73 32 2f 6d  onfigurations2/m
+0023b939: 65 6e 75 62 61 72 2f 50 4b 01 02 14 00 14 00 08  enubar/PK.......
+0023b949: 08 08 00 2b ab f6 42 b4 00 74 16 3e 01 00 00 b0  ...+..B..t.>....
+0023b959: 04 00 00 15 00 00 00 00 00 00 00 00 00 00 00 00  ................
+0023b969: 00 37 b3 23 00 4d 45 54 41 2d 49 4e 46 2f 6d 61  .7.#.META-INF/ma
+0023b979: 6e 69 66 65 73 74 2e 78 6d 6c 50 4b 05 06 00 00  nifest.xmlPK....
+0023b989: 00 00 12 00 12 00 cb 04 00 00 b8 b4 23 00 00 00  ............#...
+
+Last 208 bytes
+
+╔════════════════════╗
+║  unzip -l doc.odt  ║
+╚════════════════════╝
+
+Archive:  ../test_files/doc.odt
+  Length      Date    Time    Name
+---------  ---------- -----   ----
+       39  2013-07-22 21:25   mimetype
+    41974  2013-07-22 21:25   Thumbnails/thumbnail.png
+  2291450  2013-07-22 21:25   Pictures/1000000000000CC000000990038D2A62.jpg
+     4752  2013-07-22 21:25   content.xml
+    11677  2013-07-22 21:25   styles.xml
+     9882  2013-07-22 21:25   settings.xml
+     1040  2013-07-22 21:25   meta.xml
+      899  2013-07-22 21:25   manifest.rdf
+        0  2013-07-22 21:25   Configurations2/accelerator/current.xml
+        0  2013-07-22 21:25   Configurations2/toolpanel/
+        0  2013-07-22 21:25   Configurations2/statusbar/
+        0  2013-07-22 21:25   Configurations2/progressbar/
+        0  2013-07-22 21:25   Configurations2/toolbar/
+        0  2013-07-22 21:25   Configurations2/images/Bitmaps/
+        0  2013-07-22 21:25   Configurations2/popupmenu/
+        0  2013-07-22 21:25   Configurations2/floater/
+        0  2013-07-22 21:25   Configurations2/menubar/
+     1200  2013-07-22 21:25   META-INF/manifest.xml
+---------                     -------
+  2362913                     18 files
+
+
+╔══════════════════╗
+║  olevba doc.odt  ║
+╚══════════════════╝
+
+olevba 0.60.2 on Python 3.13.7 - http://decalage.info/python/oletools
+===============================================================================
+FILE: ../test_files/doc.odt
+Type: OpenXML
+No VBA or XLM macros found.
+
+
+
+╔══════════════════════╗
+║  docx2txt doc.odt -  ║
+╚══════════════════════╝
+
+
+
+╔═══════════════════╗
+║  odt2txt doc.odt  ║
+╚═══════════════════╝
+
+
+[-- Image: graphics1 --]RENDEZ L'AUTONOMIE À L'ALSACE
+
+SINON NOUS TUERONS
+
+LE CHAT!!!
+
+
