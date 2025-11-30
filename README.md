@@ -76,7 +76,7 @@ chmod +x *.sh;
 
 ```
 The executable will be in dist/
-You can save it where ever you want and use it as a standard linux command!
+You can save it in /usr/bin/unveil and use it as a standard linux command!
 ```
 
 Or you can run the script normally
