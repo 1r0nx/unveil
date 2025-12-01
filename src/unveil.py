@@ -8,7 +8,7 @@ import commands
 
 
 parser = argparse.ArgumentParser(
-    description="get info from a file by running standard linux commands on the file and generate a report.txt"
+    description="get info from a file by running standard linux commands on the file and generate a report file"
 )
 parser.add_argument("-f", "--file", type=str, metavar="filename", required=True)
 parser.add_argument("-o", "--output", type=str, metavar="report")
