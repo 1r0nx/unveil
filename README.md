@@ -58,7 +58,7 @@ The script install_commands.sh from the repository will install the commands aut
 ```bash
 sudo apt-get install python3 python3-venv
 python3 -m venv /path/to/venv
-pip3 install oletools
+pip3 install oletools 
 ```
 Notes: In the ./intall_commands.sh you can uncomments the last lines to set the venv to ~/Documents/Python
 
