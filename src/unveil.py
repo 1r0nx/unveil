@@ -24,18 +24,25 @@ filename = args.file
 if args.output != None:
     commands.report_file = args.output
 
-if os.path.exists(filename):
-    pass
-else:
-    print(f'The file "{filename}" doesnt exist!')
+if not os.path.isfile(filename):
+    print("ERROR: file does not exist")
+    sys.exit(0)
+if not os.access(filename, os.R_OK):
+    print("ERROR: file not readable")
     sys.exit(0)
 
-# Start of commands to run for any files
+##########################################
+### Start of commands to run for any files
+##########################################
+
 res = commands.file_type_identifier(filename)
 commands.exiftool_command(filename)
 commands.binwalk_command(filename)
 commands.xxd_command(filename)
-# End of commands to run for any files
+
+##########################################
+### End of commands to run for any files
+##########################################
 
 if res == "image":
     commands.pngcheck_command(filename)

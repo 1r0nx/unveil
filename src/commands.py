@@ -1,4 +1,5 @@
 import subprocess
+import shutil
 import os
 import sys
 
@@ -31,6 +32,21 @@ def beatiful_display(command):
     return f"{top}\n{middle}\n{bottom}"
 
 
+def check_tool(tool):
+    if shutil.which(tool) is None:
+        return False
+    return True
+
+
+def safe_run(cmd):
+    try:
+        return subprocess.run(cmd, capture_output=True, text=True, check=False)
+    except FileNotFoundError:
+        return SimpleNamespace(stdout="", stderr=f"ERROR: command not found: {cmd[0]}")
+    except Exception as e:
+        return SimpleNamespace(stdout="", stderr=f"ERROR while running {cmd}: {e}")
+
+
 def write_in_report(report, command, res):
     with open(report_file, "a") as r:
         r.write(f"\n{command}\n\n")
@@ -40,9 +56,14 @@ def write_in_report(report, command, res):
 def file_type_identifier(filename):
     cmd = ["file", "-b", filename]
     cmd_displayed = f"{os.path.basename(cmd[0])} {cmd[1]} {os.path.basename(cmd[2])}"
+
+    if not check_tool(cmd[0]):
+        write_in_report(report_file, beatiful_display(cmd[0]), "Not installed")
+        return
+
     result = subprocess.run(cmd, capture_output=True, text=True)
     print(f"\n\nRunning: {cmd_displayed}\n")
-    res = result.stdout
+    res = result.stdout + result.stderr
     with open(report_file, "a") as r:
         r.write(f"{beatiful_display(cmd_displayed)}\n\n")
         r.write(res + "\n")
@@ -72,27 +93,42 @@ def file_type_identifier(filename):
 def exiftool_command(filename):
     cmd = ["exiftool", filename]
     cmd_displayed = f"{os.path.basename(cmd[0])} {os.path.basename(cmd[1])}"
+
+    if not check_tool(cmd[0]):
+        write_in_report(report_file, beatiful_display(cmd[0]), "Not installed")
+        return
+
     print(f"\nRunning: {cmd_displayed} \n")
-    result = subprocess.run(cmd, capture_output=True, text=True)
-    res = result.stdout
+    result = safe_run(cmd)
+    res = result.stdout + result.stderr
     write_in_report(report_file, beatiful_display(cmd_displayed), res)
 
 
 def binwalk_command(filename):
     cmd = ["binwalk", filename]
     cmd_displayed = f"{os.path.basename(cmd[0])} {os.path.basename(cmd[1])}"
+
+    if not check_tool(cmd[0]):
+        write_in_report(report_file, beatiful_display(cmd[0]), "Not installed")
+        return
+
     print(f"\nRunning: {cmd_displayed}\n")
-    result = subprocess.run(cmd, capture_output=True, text=True)
-    res = result.stdout
+    result = safe_run(cmd)
+    res = result.stdout + result.stderr
     write_in_report(report_file, beatiful_display(cmd_displayed), res)
 
 
 def xxd_command(filename):
     cmd = ["xxd", "-g", "1", "-l", "208", filename]
     cmd_displayed = f"{os.path.basename(cmd[0])} {cmd[1]} {cmd[2]} {cmd[3]} {cmd[4]} {os.path.basename(cmd[5])}"
+
+    if not check_tool(cmd[0]):
+        write_in_report(report_file, beatiful_display(cmd[0]), "Not installed")
+        return
+
     print(f"\nRunning: {cmd_displayed}\n")
-    result = subprocess.run(cmd, capture_output=True, text=True)
-    res = result.stdout
+    result = safe_run(cmd)
+    res = result.stdout + result.stderr
     write_in_report(report_file, beatiful_display(cmd_displayed), res)
     with open(report_file, "a") as r:
         r.write(f"First 208 bytes\n")
@@ -100,8 +136,8 @@ def xxd_command(filename):
     cmd = ["xxd", "-g", "1", "-s", "-208", filename]
     cmd_displayed = f"{os.path.basename(cmd[0])} {cmd[1]} {cmd[2]} {cmd[3]} {cmd[4]} {os.path.basename(cmd[5])}"
     print(f"\nRunning: {cmd_displayed} \n")
-    result = subprocess.run(cmd, capture_output=True, text=True)
-    res = result.stdout
+    result = safe_run(cmd)
+    res = result.stdout + result.stderr
     write_in_report(report_file, beatiful_display(cmd_displayed), res)
     with open(report_file, "a") as r:
         r.write(f"Last 208 bytes\n")
@@ -110,26 +146,41 @@ def xxd_command(filename):
 def pngcheck_command(filename):
     cmd = ["pngcheck", "-v", filename]
     cmd_displayed = f"{os.path.basename(cmd[0])} {cmd[1]} {os.path.basename(cmd[2])}"
+
+    if not check_tool(cmd[0]):
+        write_in_report(report_file, beatiful_display(cmd[0]), "Not installed")
+        return
+
     print(f"\nRunning: {cmd_displayed} \n")
-    result = subprocess.run(cmd, capture_output=True, text=True)
-    res = result.stdout
+    result = safe_run(cmd)
+    res = result.stdout + result.stderr
     write_in_report(report_file, beatiful_display(cmd_displayed), res)
 
 
 def zsteg_command(filename):
     cmd = ["zsteg", filename]
     cmd_displayed = f"{os.path.basename(cmd[0])} {os.path.basename(cmd[1])}"
+
+    if not check_tool(cmd[0]):
+        write_in_report(report_file, beatiful_display(cmd[0]), "Not installed")
+        return
+
     print(f"\nRunning: {cmd_displayed} \n")
-    result = subprocess.run(cmd, capture_output=True, text=True)
-    res = result.stdout
+    result = safe_run(cmd)
+    res = result.stdout + result.stderr
     write_in_report(report_file, beatiful_display(cmd_displayed), res)
 
 
 def steghide_command(filename):
     cmd = ["steghide", "info", filename, "-p", ""]
     cmd_displayed = f"{os.path.basename(cmd[0])} {cmd[1]} {os.path.basename(cmd[2])} {cmd[3]} '{cmd[4]}'"
+
+    if not check_tool(cmd[0]):
+        write_in_report(report_file, beatiful_display(cmd[0]), "Not installed")
+        return
+
     print(f"\nRunning: {cmd_displayed}\n")
-    result = subprocess.run(cmd, capture_output=True, text=True)
+    result = safe_run(cmd)
     res = result.stdout + result.stderr
     write_in_report(report_file, beatiful_display(cmd_displayed), res)
 
@@ -137,108 +188,168 @@ def steghide_command(filename):
 def pdfinfo_command(filename):
     cmd = ["pdfinfo", filename]
     cmd_displayed = f"{os.path.basename(cmd[0])} {os.path.basename(cmd[1])}"
+
+    if not check_tool(cmd[0]):
+        write_in_report(report_file, beatiful_display(cmd[0]), "Not installed")
+        return
+
     print(f"\nRunning: {cmd_displayed} \n")
-    result = subprocess.run(cmd, capture_output=True, text=True)
-    res = result.stdout
+    result = safe_run(cmd)
+    res = result.stdout + result.stderr
     write_in_report(report_file, beatiful_display(cmd_displayed), res)
 
 
 def unzip_command(filename):
     cmd = ["unzip", "-l", filename]
     cmd_displayed = f"{os.path.basename(cmd[0])} {cmd[1]} {os.path.basename(cmd[2])}"
+
+    if not check_tool(cmd[0]):
+        write_in_report(report_file, beatiful_display(cmd[0]), "Not installed")
+        return
+
     print(f"\nRunning: {cmd_displayed} \n")
-    result = subprocess.run(cmd, capture_output=True, text=True)
-    res = result.stdout
+    result = safe_run(cmd)
+    res = result.stdout + result.stderr
     write_in_report(report_file, beatiful_display(cmd_displayed), res)
 
 
 def pdfimages_command(filename):
     cmd = ["pdfimages", "-list", filename]
     cmd_displayed = f"{os.path.basename(cmd[0])} {cmd[1]} {os.path.basename(cmd[2])}"
+
+    if not check_tool(cmd[0]):
+        write_in_report(report_file, beatiful_display(cmd[0]), "Not installed")
+        return
+
     print(f"\nRunning: {cmd_displayed} \n")
-    result = subprocess.run(cmd, capture_output=True, text=True)
-    res = result.stdout
+    result = safe_run(cmd)
+    res = result.stdout + result.stderr
     write_in_report(report_file, beatiful_display(cmd_displayed), res)
 
 
 def pdftotext_command(filename):
     cmd = ["pdftotext", filename, "-"]
     cmd_displayed = f"{os.path.basename(cmd[0])} {os.path.basename(cmd[1])} {cmd[2]}"
+
+    if not check_tool(cmd[0]):
+        write_in_report(report_file, beatiful_display(cmd[0]), "Not installed")
+        return
+
     print(f"\nRunning: {cmd_displayed}\n")
-    result = subprocess.run(cmd, capture_output=True, text=True)
-    res = result.stdout
+    result = safe_run(cmd)
+    res = result.stdout + result.stderr
     write_in_report(report_file, beatiful_display(cmd_displayed), res)
 
 
 def soxi_command(filename):
     cmd = ["soxi", filename]
     cmd_displayed = f"{os.path.basename(cmd[0])} {os.path.basename(cmd[1])}"
+
+    if not check_tool(cmd[0]):
+        write_in_report(report_file, beatiful_display(cmd[0]), "Not installed")
+        return
+
     print(f"\nRunning: {cmd_displayed} \n")
-    result = subprocess.run(cmd, capture_output=True, text=True)
-    res = result.stdout
+    result = safe_run(cmd)
+    res = result.stdout + result.stderr
     write_in_report(report_file, beatiful_display(cmd_displayed), res)
 
 
 def seven_zip_command(filename):
     cmd = ["7z", "l", filename]
     cmd_displayed = f"{os.path.basename(cmd[0])} {cmd[1]} {os.path.basename(cmd[2])}"
+
+    if not check_tool(cmd[0]):
+        write_in_report(report_file, beatiful_display(cmd[0]), "Not installed")
+        return
+
     print(f"\nRunning: {cmd_displayed} \n")
-    result = subprocess.run(cmd, capture_output=True, text=True)
-    res = result.stdout
+    result = safe_run(cmd)
+    res = result.stdout + result.stderr
     write_in_report(report_file, beatiful_display(cmd_displayed), res)
 
 
 def olevba_command(filename):
     cmd = ["olevba", filename]
     cmd_displayed = f"{os.path.basename(cmd[0])} {os.path.basename(cmd[1])}"
+
+    if not check_tool(cmd[0]):
+        write_in_report(report_file, beatiful_display(cmd[0]), "Not installed")
+        return
+
     print(f"\nRunning: {cmd_displayed}\n")
-    result = subprocess.run(cmd, capture_output=True, text=True)
-    res = result.stdout
+    result = safe_run(cmd)
+    res = result.stdout + result.stderr
     write_in_report(report_file, beatiful_display(cmd_displayed), res)
 
 
 def docx2txt_command(filename):
     cmd = ["docx2txt", filename, "-"]
     cmd_displayed = f"{os.path.basename(cmd[0])} {os.path.basename(cmd[1])} {cmd[2]}"
+
+    if not check_tool(cmd[0]):
+        write_in_report(report_file, beatiful_display(cmd[0]), "Not installed")
+        return
+
     print(f"\nRunning: {cmd_displayed} \n")
-    result = subprocess.run(cmd, capture_output=True, text=True)
-    res = result.stdout
+    result = safe_run(cmd)
+    res = result.stdout + result.stderr
     write_in_report(report_file, beatiful_display(cmd_displayed), res)
 
 
 def odt2txt_command(filename):
     cmd = ["odt2txt", filename]
     cmd_displayed = f"{os.path.basename(cmd[0])} {os.path.basename(cmd[1])}"
+
+    if not check_tool(cmd[0]):
+        write_in_report(report_file, beatiful_display(cmd[0]), "Not installed")
+        return
+
     print(f"\nRunning: {cmd_displayed} \n")
-    result = subprocess.run(cmd, capture_output=True, text=True)
-    res = result.stdout
+    result = safe_run(cmd)
+    res = result.stdout + result.stderr
     write_in_report(report_file, beatiful_display(cmd_displayed), res)
 
 
 def fdisk_command(filename):
     cmd = ["fdisk", "-l", filename]
     cmd_displayed = f"{os.path.basename(cmd[0])} {cmd[1]} {os.path.basename(cmd[2])}"
+
+    if not check_tool(cmd[0]):
+        write_in_report(report_file, beatiful_display(cmd[0]), "Not installed")
+        return
+
     print(f"\nRunning: {cmd_displayed}\n")
-    result = subprocess.run(cmd, capture_output=True, text=True)
-    res = result.stdout
+    result = safe_run(cmd)
+    res = result.stdout + result.stderr
     write_in_report(report_file, beatiful_display(cmd_displayed), res)
 
 
 def mmls_command(filename):
     cmd = ["mmls", filename]
     cmd_displayed = f"{os.path.basename(cmd[0])} {os.path.basename(cmd[1])}"
+
+    if not check_tool(cmd[0]):
+        write_in_report(report_file, beatiful_display(cmd[0]), "Not installed")
+        return
+
     print(f"\nRunning: {cmd_displayed} \n")
-    result = subprocess.run(cmd, capture_output=True, text=True)
-    res = result.stdout
+    result = safe_run(cmd)
+    res = result.stdout + result.stderr
     write_in_report(report_file, beatiful_display(cmd_displayed), res)
 
 
 def checksec_command(filename):
     cmd = ["checksec", filename]
     cmd_displayed = f"{os.path.basename(cmd[0])} {os.path.basename(cmd[1])}"
+
+    if not check_tool(cmd[0]):
+        write_in_report(report_file, beatiful_display(cmd[0]), "Not installed")
+        return
+
     print(f"\nRunning: {cmd_displayed}\n")
-    result = subprocess.run(cmd, capture_output=True, text=True)
-    res = result.stderr
+    result = safe_run(cmd)
+    res = result.stdout + result.stderr
     write_in_report(report_file, beatiful_display(cmd_displayed), res)
 
 
@@ -246,8 +357,13 @@ def nm_command(filename):
     cmd = ["nm", filename]
     cmd_displayed = f"{os.path.basename(cmd[0])} {os.path.basename(cmd[1])}"
     print(f"\nRunning: {cmd_displayed} \n")
-    result = subprocess.run(cmd, capture_output=True, text=True)
-    res = result.stdout
+
+    if not check_tool(cmd[0]):
+        write_in_report(report_file, beatiful_display(cmd[0]), "Not installed")
+        return
+
+    result = safe_run(cmd)
+    res = result.stdout + result.stderr
     write_in_report(report_file, beatiful_display(cmd_displayed), res)
 
 
@@ -255,15 +371,25 @@ def objdump_command(filename):
     cmd = ["objdump", "-d", filename]
     cmd_displayed = f"{os.path.basename(cmd[0])} {cmd[1]} {os.path.basename(cmd[2])}"
     print(f"\nRunning: {cmd_displayed} \n")
-    result = subprocess.run(cmd, capture_output=True, text=True)
-    res = result.stdout
+
+    if not check_tool(cmd[0]):
+        write_in_report(report_file, beatiful_display(cmd[0]), "Not installed")
+        return
+
+    result = safe_run(cmd)
+    res = result.stdout + result.stderr
     write_in_report(report_file, beatiful_display(cmd_displayed), res)
 
 
 def sqlite3_command(filename):
     cmd = ["sqlite3", filename, ".tables"]
     cmd_displayed = f"{os.path.basename(cmd[0])} {os.path.basename(cmd[1])} {cmd[2]}"
+
+    if not check_tool(cmd[0]):
+        write_in_report(report_file, beatiful_display(cmd[0]), "Not installed")
+        return
+
     print(f"\nRunning: {cmd_displayed} \n")
-    result = subprocess.run(cmd, capture_output=True, text=True)
-    res = result.stdout
+    result = safe_run(cmd)
+    res = result.stdout + result.stderr
     write_in_report(report_file, beatiful_display(cmd_displayed), res)
