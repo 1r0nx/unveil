@@ -72,6 +72,7 @@ cd unveil;
 chmod +x *.sh;
 ./install_commands.sh;
 ./build.sh;
+sudo cp dist/unveil /usr/bin/;
 ```
 
 ```
