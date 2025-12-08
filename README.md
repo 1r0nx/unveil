@@ -74,11 +74,8 @@ chmod +x *.sh;
 ./build.sh;
 sudo cp dist/unveil /usr/bin/;
 ```
+You can now use it as standard linux command!
 
-```
-The executable will be in dist/
-You can save it in /usr/bin/unveil and use it as a standard linux command!
-```
 
 Or you can run the script normally
 ```
