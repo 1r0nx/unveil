@@ -3,7 +3,7 @@ import shutil
 import os
 import sys
 
-report_file = "report.txt"
+report_file = "unveil.txt"
 
 
 def ascii_art():
