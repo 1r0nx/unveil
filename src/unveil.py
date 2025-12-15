@@ -34,7 +34,7 @@ if not os.access(filename, os.R_OK):
 
 filetype = commands.file_type_identifier(filename)
 print(f"\nThe file type identified is: {filetype}\n")
-exit(0)
+# exit(0)
 
 ##########################################
 ### Start of commands to run for any files

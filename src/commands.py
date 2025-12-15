@@ -1,8 +1,8 @@
 import subprocess
 import shutil
 import magic
-import os
 import sys
+import os
 
 report_file = "unveil.txt"
 
