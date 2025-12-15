@@ -31,11 +31,16 @@ if not os.access(filename, os.R_OK):
     print("ERROR: file not readable")
     sys.exit(0)
 
+
+filetype = commands.file_type_identifier(filename)
+print(f"\nThe file type identified is: {filetype}\n")
+# exit(0)
+
 ##########################################
 ### Start of commands to run for any files
 ##########################################
 
-res = commands.file_type_identifier(filename)
+commands.file_command(filename)
 commands.exiftool_command(filename)
 commands.binwalk_command(filename)
 commands.xxd_command(filename)
@@ -44,44 +49,45 @@ commands.xxd_command(filename)
 ### End of commands to run for any files
 ##########################################
 
-if res == "image":
+if filetype == "image":
     commands.pngcheck_command(filename)
     commands.zsteg_command(filename)
     commands.steghide_command(filename)
 
-elif res == "pdf":
+elif filetype == "pdf":
     commands.pdfinfo_command(filename)
     commands.pdfimages_command(filename)
     commands.pdftotext_command(filename)
 
-elif res == "audio":
+elif filetype == "audio":
     commands.soxi_command(filename)
     commands.steghide_command(filename)
 
-elif res == "archive":
+elif filetype == "archive":
     commands.seven_zip_command(filename)
 
-elif res == "document":
+elif filetype == "document":
     commands.unzip_command(filename)
     commands.olevba_command(filename)
     commands.docx2txt_command(filename)
     commands.odt2txt_command(filename)
 
-elif res == "image_disk":
+elif filetype == "image_disk":
     commands.fdisk_command(filename)
     commands.mmls_command(filename)
 
-elif res == "executable":
+elif filetype == "executable":
     commands.checksec_command(filename)
     commands.nm_command(filename)
     commands.objdump_command(filename)
 
-elif res == "database":
+elif filetype == "database":
     commands.sqlite3_command(filename)
 
 else:
-    print("\nThis file type is not supported :(")
+    print(f'\nThe file type "{filetype}" is not supported :(')
     print(f'GO CHECK THE FILE: "{commands.report_file}"\n')
     sys.exit(0)
 
 print(f'\nGO CHECK THE FILE: "{commands.report_file}"\n')
+sys.exit(0)

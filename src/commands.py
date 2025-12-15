@@ -1,7 +1,8 @@
 import subprocess
 import shutil
-import os
+import magic
 import sys
+import os
 
 report_file = "unveil.txt"
 
@@ -40,7 +41,9 @@ def check_tool(tool):
 
 def safe_run(cmd):
     try:
-        return subprocess.run(cmd, capture_output=True, text=True, check=False)
+        return subprocess.run(
+            cmd, capture_output=True, text=True, check=False, timeout=25
+        )
     except FileNotFoundError:
         return SimpleNamespace(stdout="", stderr=f"ERROR: command not found: {cmd[0]}")
     except Exception as e:
@@ -53,41 +56,48 @@ def write_in_report(report, command, res):
         r.write(res + "\n")
 
 
-def file_type_identifier(filename):
-    cmd = ["file", "-b", filename]
-    cmd_displayed = f"{os.path.basename(cmd[0])} {cmd[1]} {os.path.basename(cmd[2])}"
+def file_type_identifier(path):
+    mime = magic.from_file(path, mime=True)
+    file_type = mime.split("/", 1)[1]
+
+    if file_type in ["bmp", "gif", "jpeg", "png"]:
+        return "image"
+    elif file_type in ["pdf"]:
+        return "pdf"
+    elif file_type in ["flac", "mpeg", "x-wav"]:
+        return "audio"
+    elif file_type in ["x-tar", "x-7z-compressed", "vnd.rar", "zip"]:
+        return "archive"
+    elif file_type in [
+        "msword",
+        "vnd.openxmlformats-officedocument.wordprocessingml.document",
+        "vnd.oasis.opendocument.text",
+        "vnd.ms-powerpoint",
+        "vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    ]:
+        return "document"
+    elif file_type in ["x-raw-disk-image", "x-iso9660-image"]:
+        return "image_disk"
+    elif file_type in ["x-pie-executable"]:
+        return "executable"
+    elif file_type in ["vnd.sqlite3"]:
+        return "database"
+    else:
+        return file_type
+
+
+def file_command(filename):
+    cmd = ["file", filename]
+    cmd_displayed = f"{os.path.basename(cmd[0])} {os.path.basename(cmd[1])}"
 
     if not check_tool(cmd[0]):
         write_in_report(report_file, beatiful_display(cmd[0]), "Not installed")
         return
 
-    result = subprocess.run(cmd, capture_output=True, text=True)
-    print(f"\n\nRunning: {cmd_displayed}\n")
+    print(f"\nRunning: {cmd_displayed} \n")
+    result = safe_run(cmd)
     res = result.stdout + result.stderr
-    with open(report_file, "a") as r:
-        r.write(f"{beatiful_display(cmd_displayed)}\n\n")
-        r.write(res + "\n")
-    if ("PC bitmap" in res) or ("GIF" in res) or ("JPEG" in res) or ("PNG" in res):
-        return "image"
-    if "PDF" in res:
-        return "pdf"
-    if (
-        ("FLAC" in res)
-        or ("Audio file with ID3" in res)
-        or ("RIFF" in res)
-        or ("WAVE" in res)
-    ):
-        return "audio"
-    if "archive" in res:
-        return "archive"
-    if ("Microsoft" in res) or ("OpenDocument" in res):
-        return "document"
-    if "executable" in res:
-        return "executable"
-    if ("SQLite" in res) or ("database" in res):
-        return "database"
-    if ("ext4" in res) or ("FAT" in res) or ("DOS" in res) or ("MBR" in res):
-        return "image_disk"
+    write_in_report(report_file, beatiful_display(cmd_displayed), res)
 
 
 def exiftool_command(filename):
