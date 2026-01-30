@@ -32,13 +32,13 @@ def beatiful_display(command):
     # Display
     return f"{top}\n{middle}\n{bottom}"
 
-
+# Check if the commands is installed
 def check_tool(tool):
     if shutil.which(tool) is None:
         return False
     return True
 
-
+# Run the command as safe as possible
 def safe_run(cmd):
     try:
         return subprocess.run(
@@ -49,13 +49,13 @@ def safe_run(cmd):
     except Exception as e:
         return SimpleNamespace(stdout="", stderr=f"ERROR while running {cmd}: {e}")
 
-
+# The function to write in the report file
 def write_in_report(report, command, res):
     with open(report_file, "a") as r:
         r.write(f"\n{command}\n\n")
         r.write(res + "\n")
 
-
+# The function to retrive the filetype
 def file_type_identifier(path):
     mime = magic.from_file(path, mime=True)
     file_type = mime.split("/", 1)[1]
