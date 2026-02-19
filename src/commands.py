@@ -42,7 +42,8 @@ def check_tool(tool):
         result = subprocess.run(
             [shell_path, "-i", "-c", cmd], capture_output=True, text=True, timeout=2
         )
-        if "not found" in result.stdout:
+        result = result.stderr + result.stdout
+        if "not found" in result:
             return False
         else:
             return True
