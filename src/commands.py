@@ -54,8 +54,6 @@ def safe_run(cmd):
         return subprocess.run(
             cmd, capture_output=True, text=True, check=False, timeout=25
         )
-    except FileNotFoundError:
-        return SimpleNamespace(stdout="", stderr=f"ERROR: command not found: {cmd[0]}")
     except Exception as e:
         return SimpleNamespace(stdout="", stderr=f"ERROR while running {cmd}: {e}")
 
