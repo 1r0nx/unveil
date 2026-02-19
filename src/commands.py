@@ -1,6 +1,7 @@
 import os
 import shutil
 import subprocess
+from types import SimpleNamespace
 
 import magic
 
