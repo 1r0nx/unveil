@@ -1,15 +1,15 @@
-import subprocess
-import shutil
-import magic
-import sys
 import os
+import shutil
+import subprocess
+
+import magic
 
 report_file = "unveil.txt"
 
 
 def ascii_art():
     art = r"""
-$$\   $$\                               $$\ $$\ 
+$$\   $$\                               $$\ $$\
 $$ |  $$ |                              \__|$$ |
 $$ |  $$ |$$$$$$$\ $$\    $$\  $$$$$$\  $$\ $$ |
 $$ |  $$ |$$  __$$\\$$\  $$  |$$  __$$\ $$ |$$ |
@@ -32,11 +32,21 @@ def beatiful_display(command):
     # Display
     return f"{top}\n{middle}\n{bottom}"
 
+
 # Check if the commands is installed
 def check_tool(tool):
     if shutil.which(tool) is None:
-        return False
+        shell_path = os.environ.get("SHELL", "/bin/bash")
+        cmd = f"type {tool}"
+        result = subprocess.run(
+            [shell_path, "-i", "-c", cmd], capture_output=True, text=True, timeout=2
+        )
+        if "not found" in result.stdout:
+            return False
+        else:
+            return True
     return True
+
 
 # Run the command as safe as possible
 def safe_run(cmd):
@@ -49,11 +59,13 @@ def safe_run(cmd):
     except Exception as e:
         return SimpleNamespace(stdout="", stderr=f"ERROR while running {cmd}: {e}")
 
+
 # The function to write in the report file
 def write_in_report(report, command, res):
     with open(report_file, "a") as r:
         r.write(f"\n{command}\n\n")
         r.write(res + "\n")
+
 
 # The function to retrive the filetype
 def file_type_identifier(path):
@@ -141,7 +153,7 @@ def xxd_command(filename):
     res = result.stdout + result.stderr
     write_in_report(report_file, beatiful_display(cmd_displayed), res)
     with open(report_file, "a") as r:
-        r.write(f"First 208 bytes\n")
+        r.write("First 208 bytes\n")
 
     cmd = ["xxd", "-g", "1", "-s", "-208", filename]
     cmd_displayed = f"{os.path.basename(cmd[0])} {cmd[1]} {cmd[2]} {cmd[3]} {cmd[4]} {os.path.basename(cmd[5])}"
@@ -150,7 +162,7 @@ def xxd_command(filename):
     res = result.stdout + result.stderr
     write_in_report(report_file, beatiful_display(cmd_displayed), res)
     with open(report_file, "a") as r:
-        r.write(f"Last 208 bytes\n")
+        r.write("Last 208 bytes\n")
 
 
 def pngcheck_command(filename):
