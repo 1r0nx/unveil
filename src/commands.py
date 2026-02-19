@@ -38,7 +38,7 @@ def beatiful_display(command):
 def check_tool(tool):
     if shutil.which(tool) is None:
         shell = os.environ.get("SHELL")
-        cmd = [shell, "-c", "-i", "type", tool]
+        cmd = [shell, "-i", "-c", f"type {tool}"]
         result = subprocess.run(cmd, capture_output=True, text=True, timeout=2)
         result = result.stderr + result.stdout
         if "not found" in result:
