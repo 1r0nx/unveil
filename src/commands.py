@@ -74,7 +74,7 @@ def file_type_identifier(path):
         return "image"
     elif file_type in ["pdf"]:
         return "pdf"
-    elif file_type in ["flac", "mpeg", "x-wav"]:
+    elif file_type in ["flac", "mpeg", "x-wav", "mp4"]:
         return "audio"
     elif file_type in ["x-tar", "x-7z-compressed", "vnd.rar", "zip"]:
         return "archive"
