@@ -247,8 +247,8 @@ def pngcheck_command(filename):
 
 
 def zsteg_command(filename):
-    cmd = ["zsteg", filename]
-    _run_cmd(cmd, f"zsteg {os.path.basename(filename)}", "LSB steganography (zsteg)")
+    cmd = ["zsteg","-a", filename]
+    _run_cmd(cmd, f"zsteg -a {os.path.basename(filename)}", "LSB steganography (zsteg)")
 
 
 def steghide_command(filename):
