@@ -1,0 +1,97 @@
+#!/usr/bin/env python3
+
+import os
+import sys
+import argparse
+import subprocess
+import commands
+
+
+parser = argparse.ArgumentParser(
+    description="get info from a file by running standard linux commands on the file and generate a report file"
+)
+parser.add_argument("-f", "--file", type=str, metavar="filename", required=True)
+parser.add_argument("-o", "--output", type=str, metavar="report")
+
+if len(sys.argv) == 1:
+    commands.ascii_art()
+    parser.print_help()
+    sys.exit(0)
+
+args = parser.parse_args()
+filename = args.file
+
+if args.output != None:
+    commands.report_file = args.output
+
+if not os.path.isfile(filename):
+    print("ERROR: file does not exist")
+    sys.exit(0)
+if not os.access(filename, os.R_OK):
+    print("ERROR: file not readable")
+    sys.exit(0)
+
+
+filetype = commands.file_type_identifier(filename)
+print(f"\nThe file type identified is: {filetype}\n")
+#exit(0)
+
+##########################################
+### Start of commands to run for any files
+##########################################
+
+commands.file_command(filename)
+commands.exiftool_command(filename)
+commands.binwalk_command(filename)
+commands.xxd_command(filename)
+
+##########################################
+### End of commands to run for any files
+##########################################
+
+if filetype == "image":
+    commands.pngcheck_command(filename)
+    commands.zsteg_command(filename)
+    commands.steghide_command(filename)
+
+elif filetype == "pdf":
+    commands.pdfinfo_command(filename)
+    commands.pdfimages_command(filename)
+    commands.pdftotext_command(filename)
+
+elif filetype == "audio":
+    commands.soxi_command(filename)
+    commands.steghide_command(filename)
+    
+elif filetype == "video":
+    commands.ffprobe_command(filename)
+    pass
+
+elif filetype == "archive":
+    commands.seven_zip_command(filename)
+
+elif filetype == "document":
+    commands.unzip_command(filename)
+    commands.olevba_command(filename)
+    commands.docx2txt_command(filename)
+    commands.odt2txt_command(filename)
+
+elif filetype == "image_disk":
+    commands.fdisk_command(filename)
+    commands.mmls_command(filename)
+
+elif filetype == "executable":
+    commands.checksec_command(filename)
+    commands.nm_command(filename)
+    commands.objdump_command(filename)
+
+elif filetype == "database":
+    commands.sqlite3_command(filename)
+
+else:
+    print(f'\nThe file type "{filetype}" is not supported :(')
+    print(f'GO CHECK THE FILE: "{commands.report_file}"\n')
+    sys.exit(0)
+
+print(f'\nGO CHECK THE FILE: "{commands.report_file}"\n')
+sys.exit(0)
