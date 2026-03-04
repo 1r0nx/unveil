@@ -72,6 +72,7 @@ You can install it by cloning the repository and build the binary
 git clone https://github.com/1r0nx/unveil.git;
 cd unveil;
 chmod +x *.sh;
+pip3 install -r req.txt
 ./install_commands.sh;
 ./build.sh;
 sudo cp dist/unveil /usr/bin/;
