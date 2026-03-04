@@ -14,11 +14,12 @@ This tool is especially useful for:
 
 ---
 
-## 🚀 Features
+## 🧩 How It Works
 
-* Automatic file type detection
-* Rule-based command execution
-* Support for multiple file formats
+1. Matches file type with a predefined rule
+2. Force a filetype with option if not detected by rule
+3. Executes associated command
+4. Stores output in report file
 
 ---
 
@@ -110,13 +111,6 @@ unveil -f suspicious_file.bin -o suspicisous_report.txt
 - Image disk
 - Executable
 - Database
-
-## 🧩 How It Works
-
-1. Matches file type with a predefined rule
-2. Force a filetype if not detected by rule
-3. Executes associated command
-4. Stores output in report file
 
 ---
 
