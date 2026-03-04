@@ -38,6 +38,7 @@ odt2txt
 exiftool
 fdisk 
 ffmpeg 
+ffprobe
 file 
 mmls
 nm 
@@ -54,7 +55,7 @@ zsteg
 olevba
 ```
 
-The script install_commands.sh from the repository will install the commands automatically. But for olevba you need to have a python-venv set. How to to do it:
+The script install_commands.sh from this repository will install the commands automatically. But for olevba you need to have a python-venv set. How to to do it:
 ```bash
 sudo apt-get install python3 python3-venv
 python3 -m venv /path/to/venv
@@ -87,7 +88,7 @@ chmod +x unveil.py
 ## ⚙️ Usage
 
 ```bash
-unveil -f <file> -o <report_file>
+unveil -f <file> -o <report_file> -t <filetype>
 ```
 
 Example:
@@ -103,6 +104,7 @@ unveil -f suspicious_file.bin -o suspicisous_report.txt
 - Image
 - Pdf
 - Audio
+- Video
 - Archive
 - Document
 - Image disk
@@ -112,8 +114,9 @@ unveil -f suspicious_file.bin -o suspicisous_report.txt
 ## 🧩 How It Works
 
 1. Matches file type with a predefined rule
-2. Executes associated command
-3. Stores output in report file
+2. Force a filetype if not detected by rule
+3. Executes associated command
+4. Stores output in report file
 
 ---
 
