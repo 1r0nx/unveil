@@ -119,12 +119,10 @@ def write_section_header(title):
 # ─── Tool utilities ───────────────────────────────────────────────────────────
 
 def check_tool(tool):
-    if shutil.which(tool) is not None:
-        return True
-    shell = os.environ.get("SHELL", "/bin/sh")
-    cmd = [shell, "-i", "-c", f"type {tool}"]
-    result = subprocess.run(cmd, capture_output=True, text=True, timeout=2)
-    return "not found" not in (result.stderr + result.stdout)
+    """Return True if `tool` is an executable on PATH. safe_run() invokes tools
+    via subprocess without a shell, so shutil.which is the accurate check —
+    shell aliases/functions could never be run anyway."""
+    return shutil.which(tool) is not None
 
 
 def safe_run(cmd):
@@ -142,7 +140,8 @@ SUPPORTED_TYPES = {
     "image":      ["bmp", "gif", "jpeg", "png", "webp", "tiff", "x-portable-bitmap"],
     "pdf":        ["pdf"],
     "audio":      ["flac", "mpeg", "x-wav", "mp4", "ogg", "x-flac"],
-    "archive":    ["x-tar", "x-7z-compressed", "vnd.rar", "zip", "gzip", "x-bzip2", "x-xz"],
+    "archive":    ["x-tar", "x-7z-compressed", "vnd.rar", "x-rar", "x-rar-compressed",
+                   "zip", "gzip", "x-bzip2", "x-xz"],
     "video":      ["x-matroska", "mp4", "quicktime", "x-msvideo", "webm"],
     "document":   [
         "msword",
@@ -161,7 +160,7 @@ VALID_TYPES = list(SUPPORTED_TYPES.keys())
 
 def file_type_identifier(path):
     mime = magic.from_file(path, mime=True)
-    file_subtype = mime.split("/", 1)[1]
+    file_subtype = mime.split("/", 1)[1] if "/" in mime else mime
     for category, subtypes in SUPPORTED_TYPES.items():
         if file_subtype in subtypes:
             return category

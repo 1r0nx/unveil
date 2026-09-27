@@ -24,7 +24,13 @@ This tool is especially useful for:
 ---
 
 ## 🧱 Requirements
-You need to have pyinstaller to compile the source code into binary. You can install it with:
+
+The only Python dependency is **python-magic** (which needs the system `libmagic`):
+```
+pip3 install -r requirements.txt      # installs python-magic
+sudo apt-get install libmagic1        # system library used by python-magic
+```
+Optionally, **pyinstaller** to compile the source into a binary:
 ```
 pip3 install pyinstaller
 ```
@@ -34,7 +40,7 @@ And all commands to be run (you need to have them on you machine):
 7z
 binwalk
 checksec
-docs2txt
+docx2txt
 odt2txt
 exiftool
 fdisk 
@@ -71,19 +77,20 @@ You can install it by cloning the repository and build the binary
 ```
 git clone https://github.com/1r0nx/unveil.git;
 cd unveil;
-chmod +x *.sh;
-pip3 install -r requirements.txt
+chmod +x install_commands.sh;
+pip3 install -r requirements.txt;
 ./install_commands.sh;
-./build.sh;
+pyinstaller --onefile --name unveil src/unveil.py;
 sudo cp dist/unveil /usr/bin/;
 ```
 You can now use it as standard linux command!
 
 
-Or you can run the script normally
+Or you can run the script normally (from the `src/` directory, as `unveil.py`
+imports its sibling `commands.py`):
 ```
-chmod +x unveil.py
-./unveil.py
+cd src
+python3 unveil.py -f <file>
 ```
 ---
 
@@ -117,7 +124,25 @@ unveil -f suspicious_file.bin -o suspicisous_report.txt
 
 ## 🛡️ Security Considerations
 
-* Commands are executed in a system shell
+* External tools are invoked directly via `subprocess` with an argument list and **no shell**, so filenames are not subject to shell injection.
+* Each tool runs with a timeout and missing tools are skipped, so a hostile or malformed file cannot hang or crash the analysis.
+
+---
+
+## 🧪 Tests
+
+The test suite in `test/` covers file-type detection (against the samples in
+`test_files/`), tool-presence checks, report generation, and the graceful
+"tool not installed" path. It needs `python-magic` (+ `libmagic`) but not the
+external analysis tools.
+
+```bash
+pip install -r requirements.txt pytest
+pytest
+```
+
+Tests also run on every push and pull request via GitHub Actions
+(`.github/workflows/tests.yml`), across Python 3.8, 3.11 and 3.12.
 
 ---
 
